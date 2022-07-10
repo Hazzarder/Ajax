@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax JSON + search bar for users</title>
+</head>
+<body>
+    <button id="button">Load Users</button>
+    <input type="text" id="input">
+    <ul id="myUL">
+        <!-- <li>Name:<a href="#">' +user[i].name+ '</a></li> -->
+    </ul>
+    <script>
+        document.getElementById('button').addEventListener('click', loadUsers);
+        document.getElementById('input').addEventListener('keyup',searchUsers)
+
+        function loadUsers(){
+            var xhr = new XMLHttpRequest();
+            
+            xhr.open('GET', 'users.json', true)
+
+            xhr.onload = function(){
+                if(this.status == 200){
+                    var users = JSON.parse(this.responseText);
+
+                    var output = '';
+                    for (var i in users){
+                        output+= '<li>Name:<a href="#">' +users[i].name+ '</a></li>';
+                    }
+                    document.getElementById('myUL').innerHTML = output;
+                }
+                console.log(responseType)
+            }
+            xhr.send();
+        }
+        function searchUsers(){
+           var input, filter, ul, i, a, textValue;
+           input = document.getElementById('input');
+            filter = input.value.toUpperCase();
+            ul = document.getElementById('myUL');
+            li= ul.getElementsByTagName('li');
+            for (i = 0; i<li.length; i++){
+                a = li[i].getElementsByTagName('a')[0];
+                textValue = a.textContent || a.innerText;
+                if (textValue.toUpperCase().indexOf(filter) > -1){
+                    li[i].style.display="";
+                } else {
+                    li[i].style.display="none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
